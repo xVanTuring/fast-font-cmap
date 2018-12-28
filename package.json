@@ -1,0 +1,17 @@
+{
+  "name": "font-chars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/microtime": "^2.1.0",
+    "@types/node": "^10.12.18"
+  },
+  "dependencies": {}
+}
