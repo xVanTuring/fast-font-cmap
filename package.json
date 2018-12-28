@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/microtime": "^2.1.0",
     "@types/node": "^10.12.18"
   },
   "dependencies": {}

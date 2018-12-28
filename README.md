@@ -28,5 +28,5 @@ glyphIndexArray = [[startUnicde, end], [start, end], [start, end]];
 ### License
 
 This project is based on [opentype.js](https://github.com/opentypejs/opentype.js)
-If you want full support of reading font,get glyph path,create font ... on browser, the opentype.js is your best choice.
-All my code is under MIT License, the fonts in fonts is test only.
+If you want full support of reading font,getting glyph path,creating font ... on browser, the opentype.js is your best choice.
+All my code is under MIT License.The fonts in fonts dir is test only.
