@@ -6,9 +6,8 @@ export interface ICMap {
   length?: number;
   language?: number;
   groupCount?: number;
-  // glyphIndexMap?: any;
   glyphIndexArray?: number[][];
-  segCount?: any;
+  segCount?: number;
 }
 export function parseCmapTable(buf: Buffer, start: number) {
   const cmap: ICMap = {};

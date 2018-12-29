@@ -72,7 +72,7 @@ function uncompressTable(buf: Buffer, cmapEntry: ICMapEntry) {
 }
 export function loadCMap(
   fontPath: string,
-  callback: (err: any, cmap: ICMap | null) => void
+  callback: (err: Error | null, cmap: ICMap | null) => void
 ) {
   fs.readFile(fontPath, (err, buf) => {
     if (err) {
