@@ -96,14 +96,13 @@ export function loadCMap(
         cmapEntry = parseWOFFCMapEntry(buf, numTables);
       } else {
         callback(new Error("Unsupported OpenType signature" + signature), null);
+        return;
       }
       try {
-        const table = uncompressTable(buf, cmapEntry!);
-        if (table) {
-          // tslint:disable-next-line:variable-name
-          const _cmap = parseCmapTable(table.buffer, table.offset);
-          callback(null, _cmap);
-        }
+        const table = uncompressTable(buf, cmapEntry);
+        // tslint:disable-next-line:variable-name
+        const _cmap = parseCmapTable(table.buffer, table.offset);
+        callback(null, _cmap);
       } catch (error) {
         callback(error, null);
       }

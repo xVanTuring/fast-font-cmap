@@ -1,16 +1,21 @@
 {
   "name": "font-chars",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tsc -w"
+    "test": "yarn build",
+    "watch": "tsc -w",
+    "build": "webpack --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^10.12.18"
+    "@types/node": "^10.12.18",
+    "ts-loader": "^5.3.2",
+    "typescript": "^3.2.2",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {}
 }
