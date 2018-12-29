@@ -1,15 +1,15 @@
 {
-  "name": "font-chars",
+  "name": "fast-font-cmap",
   "version": "1.0.1",
-  "description": "",
+  "description": "read cmap from font",
   "main": "dist/index.js",
   "scripts": {
     "test": "yarn build",
     "watch": "tsc -w",
     "build": "webpack --config webpack.config.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "xVan Turing",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^10.12.18",
     "ts-loader": "^5.3.2",
@@ -17,5 +17,6 @@
     "webpack": "^4.28.3",
     "webpack-cli": "^3.1.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/xVanTuring/fast-font-cmap"
 }
