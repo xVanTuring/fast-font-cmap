@@ -5,7 +5,9 @@ module.exports = {
   target: "node",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "index.js"
+    filename: "index.js",
+    // library: "font-cmap",
+    libraryTarget: "commonjs2"
   },
   devtool: "source-map",
   optimization: {

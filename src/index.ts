@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { promisify } from "util";
 import zlib from "zlib";
 import { ICMap, parseCmapTable } from "./cmap";
 import { getTag, getULong, getUShort } from "./parse";
@@ -70,42 +71,58 @@ function uncompressTable(buf: Buffer, cmapEntry: ICMapEntry) {
     return { buffer: buf, offset: cmapEntry.offset };
   }
 }
+function parseBuffer(buf: Buffer) {
+  const signature = getTag(buf, 0);
+  let numTables: number;
+  let cmapEntry: ICMapEntry;
+  if (
+    signature === String.fromCharCode(0, 1, 0, 0) ||
+    signature === "true" ||
+    signature === "typ1"
+  ) {
+    numTables = getUShort(buf, 4);
+    cmapEntry = parseOpenTypeCMapEntry(buf, numTables);
+  } else if (signature === "OTTO") {
+    numTables = getUShort(buf, 4);
+    cmapEntry = parseOpenTypeCMapEntry(buf, numTables);
+  } else if (signature === "wOFF") {
+    numTables = getUShort(buf, 12);
+    cmapEntry = parseWOFFCMapEntry(buf, numTables);
+  } else {
+    throw new Error("Unsupported OpenType signature" + signature);
+  }
+  const table = uncompressTable(buf, cmapEntry);
+  // tslint:disable-next-line:variable-name
+  const _cmap = parseCmapTable(table.buffer, table.offset);
+  return _cmap;
+}
 export function loadCMap(
   fontPath: string,
-  callback: (err: Error | null, cmap: ICMap | null) => void
+  callback?: (err: Error | null, cmap: ICMap | null) => void
 ) {
-  fs.readFile(fontPath, (err, buf) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      const signature = getTag(buf, 0);
-      let numTables: number;
-      let cmapEntry: ICMapEntry;
-      if (
-        signature === String.fromCharCode(0, 1, 0, 0) ||
-        signature === "true" ||
-        signature === "typ1"
-      ) {
-        numTables = getUShort(buf, 4);
-        cmapEntry = parseOpenTypeCMapEntry(buf, numTables);
-      } else if (signature === "OTTO") {
-        numTables = getUShort(buf, 4);
-        cmapEntry = parseOpenTypeCMapEntry(buf, numTables);
-      } else if (signature === "wOFF") {
-        numTables = getUShort(buf, 12);
-        cmapEntry = parseWOFFCMapEntry(buf, numTables);
+  if (callback) {
+    fs.readFile(fontPath, (err, buf) => {
+      if (err) {
+        callback(err, null);
       } else {
-        callback(new Error("Unsupported OpenType signature" + signature), null);
-        return;
+        try {
+          // tslint:disable-next-line:variable-name
+          const _cmap = parseBuffer(buf);
+          callback(null, _cmap);
+        } catch (err) {
+          callback(err, null);
+        }
       }
-      try {
-        const table = uncompressTable(buf, cmapEntry);
-        // tslint:disable-next-line:variable-name
-        const _cmap = parseCmapTable(table.buffer, table.offset);
-        callback(null, _cmap);
-      } catch (error) {
-        callback(error, null);
-      }
-    }
-  });
+    });
+  } else {
+    const readFileAsync = promisify(fs.readFile);
+    // tslint:disable-next-line:arrow-parens
+    return readFileAsync(fontPath).then(buf => {
+      return parseBuffer(buf);
+    });
+  }
+}
+export function loadCmapSync(fontPath: string): ICMap {
+  const buffer = fs.readFileSync(fontPath);
+  return parseBuffer(buffer);
 }
