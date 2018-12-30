@@ -149,7 +149,6 @@ export function loadInfo(
         try {
           // tslint:disable-next-line:variable-name
           const info = parseBuffer(buf);
-          console.log(info);
           callback(null, info);
         } catch (err) {
           callback(err, null);

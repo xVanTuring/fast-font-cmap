@@ -1,7 +1,7 @@
 {
-  "name": "fast-font-cmap",
+  "name": "fast-font-info",
   "version": "1.0.3",
-  "description": "read cmap from font",
+  "description": "read info from font",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
